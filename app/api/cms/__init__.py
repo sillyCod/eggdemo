@@ -19,5 +19,5 @@ def create_cms():
     user_api.register(cms)
     log_api.register(cms)
     file_api.register(cms)
-    test_api.register(cms)
+    # test_api.register(cms)
     return cms

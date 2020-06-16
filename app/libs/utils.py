@@ -5,7 +5,7 @@
 
 import re
 import time
-
+import datetime
 from flask import current_app, jsonify, request
 from lin.exception import ParameterException
 
@@ -47,3 +47,7 @@ def json_res(**kwargs):
     count, items, page, total, total_page ...
     '''
     return jsonify(kwargs)
+
+
+def strftime(_datetime: datetime.datetime, time_format="%Y-%m-%d %H:%M:%S") -> str:
+    return _datetime.strftime(time_format)
