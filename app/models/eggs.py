@@ -5,18 +5,25 @@
 @time: 2020/6/17 0:16
 """
 from lin.db import db
+from sqlalchemy.sql import func, text
 
 
 class EggUser(db.Model):
+    """
+    小程序用户
+    """
     id = db.Column(db.Integer, primary_key=True, auto_increment=True)
     open_id = db.Column(db.Integer, unique=True)
     nike_name = db.Column(db.String)
 
-    utime = db.Column(db.DateTime)
-    ctime = db.Column(db.DateTime)
+    utime = db.Column(db.DateTime, server_default=text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
+    ctime = db.Column(db.DateTime, server_default=func.now())
 
 
-class EggOrder(db.Model):
+class Order(db.Model):
+    """
+    订单
+    """
     id = db.Column(db.Long, primary_key=True, auto_increment=True)
     open_id = db.Column(db.String, nullable=False, index=True)
     sku_id = db.Column(db.Integer)
@@ -27,42 +34,44 @@ class EggOrder(db.Model):
     sent_time = db.Column()  # 预计送达时间
     payment_status = db.Column()
 
-    utime = db.Column(db.DateTime)
-    ctime = db.Column(db.DateTime)
+    utime = db.Column(db.DateTime, server_default=text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
+    ctime = db.Column(db.DateTime, server_default=func.now())
 
 
 class Sku(db.Model):
     id = db.Column(db.Long, primary_key=True, auto_increment=True)
-    name = db.Column(db.String)
-    description = db.Column()
+    name = db.Column(db.String(64))
+    image = db.Column()
+    description = db.Column(db.String(1024))
 
-    utime = db.Column()
-    ctime = db.Column()
+    utime = db.Column(db.DateTime, server_default=text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
+    ctime = db.Column(db.DateTime, server_default=func.now())
 
 
-class Membership(db.Model):
+class MembershipCard(db.Model):
     id = db.Column()
     open_id = db.Column()
     egg_count = db.Column()
-    total_count = db.Column()
-    chicken_count = db.Column()
-    activate_expire_time = db.Column()
-    is_activated = db.Column()
+    total_count = db.Column(db.Integer, nullable=False)
+    chicken_count = db.Column(db.Integer, nullable=False)
+    activate_expire_time = db.Column(db.DateTime)
+    is_activated = db.Column(db.Boolean, nullable=False)
 
-    utime = db.Column()
-    ctime = db.Column()
+    utime = db.Column(db.DateTime, server_default=text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
+    ctime = db.Column(db.DateTime, server_default=func.now())
 
 
 class Address(db.Model):
 
     id = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey("egg_user.id"))
     user_name = db.Column(db.String)
-    phone = db.Column(db.String, nullable=False)
-    province = db.Column(db.String)
-    city = db.Column(db.String)
-    district = db.Column(db.String)
+    phone = db.Column(db.String(32), nullable=False)
+    province = db.Column(db.String(32), nullable=False)
+    city = db.Column(db.String(32))
+    district = db.Column(db.String(32), nullable=False)
 
-    detail = db.Column()
+    detail = db.Column(db.String(256))
 
-    utime = db.Column()
-    ctime = db.Column()
+    utime = db.Column(db.DateTime, server_default=text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
+    ctime = db.Column(db.DateTime, server_default=func.now())
