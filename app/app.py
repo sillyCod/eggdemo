@@ -9,13 +9,15 @@ from app.libs.lin_flask import LinFlask
 from flask import request, g
 from flask_cors import CORS
 from lin import Lin
+from app.api.v1.eggshop import shop_bp
 
 
 def register_blueprints(app):
     from app.api.v1 import create_v1
     from app.api.cms import create_cms
-    app.register_blueprint(create_v1(), url_prefix='/v1')
+    # app.register_blueprint(create_v1(), url_prefix='/v1')
     app.register_blueprint(create_cms(), url_prefix='/cms')
+    app.register_blueprint(shop_bp)
 
 
 def apply_cors(app):
