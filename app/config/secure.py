@@ -15,7 +15,11 @@ class DevelopmentSecure(BaseConfig):
 
     SQLALCHEMY_ECHO = True  # 初期调试状态下需要看一下SQLAlchemy的执行
 
+    # use os.urandom(32) to generate a random secret key
     SECRET_KEY = '\x88W\xf09\x91\x07\x98\x89\x87\x96\xa0A\xc68\xf9\xecJJU\x17\xc5V\xbe\x8b\xef\xd7\xd8\xd3\xe6\x95*4'
+
+    APP_KEY = ""
+    APP_SECRET = ""
 
 
 class ProductionSecure(BaseConfig):
