@@ -49,3 +49,20 @@ class UserDetail(Resource):
 
     def delete(self):
         pass
+
+
+@user_api.resource("/address_list")
+class AddressListResource(Resource):
+    def get(self):
+        address_list = get_address_list()
+        return gen_result_by_code(sc.SUCC, address_list)
+
+
+@user_api.resource("/address")
+class AddressInfoResource(Resource):
+    def get(self):
+        data = get_address_info(address_id)
+        return gen_result_by_code(sc.SUCC, data)
+
+    def post(self):
+        data = create_address_info()

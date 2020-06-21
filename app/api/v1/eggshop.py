@@ -8,6 +8,8 @@ from app.libs.lin_response import Resource
 from flask.blueprints import Blueprint
 from flask_restful import Api
 
+from app.ops.order import consume_membership
+
 shop_bp = Blueprint("shop", __name__, url_prefix="/api/v1/shop")
 shop_api = Api(shop_bp)
 
@@ -31,3 +33,13 @@ class MembershipResource(Resource):
 
     def delete(self):
         pass
+
+
+@shop_api.resource("/consume")
+class ConsumeResource(Resource):
+    def post(self):
+        consume_membership()
+
+
+
+
