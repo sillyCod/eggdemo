@@ -13,8 +13,9 @@ class EggUser(db.Model):
     小程序用户
     """
     id = db.Column(db.Integer, primary_key=True, auto_increment=True)
-    open_id = db.Column(db.Integer, unique=True)
-    nick_name = db.Column(db.String)
+    open_id = db.Column(db.String(64), unique=True, nullable=False)
+    union_id = db.Column(db.String(64), nullable=False)
+    nike_name = db.Column(db.String(64))
 
     utime = db.Column(db.DateTime, server_default=text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
     ctime = db.Column(db.DateTime, server_default=func.now())

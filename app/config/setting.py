@@ -26,6 +26,11 @@ class DevelopmentConfig(BaseConfig):
 
     # 令牌配置
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=1)
+    APP_ID = ""
+    APP_SECRET = ""
+    WECHAT_LOGIN_URL = ""
+
+    TIMEOUT = 5
 
     # 插件模块暂时没有开启，以下配置可忽略
     # plugin config写在字典里面
