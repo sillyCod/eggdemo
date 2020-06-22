@@ -7,6 +7,8 @@
 from app.libs.lin_response import Resource
 from flask.blueprints import Blueprint
 from flask_restful import Api
+from app.libs.restful import gen_result_by_code
+from app.libs.decorators import user_login_required
 
 from app.ops.order import consume_membership
 
@@ -14,32 +16,11 @@ shop_bp = Blueprint("shop", __name__, url_prefix="/api/v1/shop")
 shop_api = Api(shop_bp)
 
 
-@shop_api.resource("/card")
-class MembershipResource(Resource):
-
-    schema = None
-    method_decorators = None
-
-    def get(self):
-        # get_membership_cards()
-        pass
-
-    def post(self):
-        # buy_card()
-        pass
-
-    def put(self):
-        pass
-
-    def delete(self):
-        pass
-
-
 @shop_api.resource("/consume")
 class ConsumeResource(Resource):
+
+    method_decorators = [user_login_required, ]
+
     def post(self):
-        consume_membership()
-
-
-
-
+        status = consume_membership()
+        return gen_result_by_code(status)

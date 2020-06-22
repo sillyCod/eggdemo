@@ -4,10 +4,17 @@
 @file: user
 @time: 2020/6/17 0:48
 """
-from flask_restful import Resource, Api
+from flask_restful import Api
+from app.libs.lin_response import Resource
 from flask.blueprints import Blueprint
 from flask import request
+from flask import make_response, jsonify
+
+from app.ops.membership import get_membership_list
 from app.ops.user import get_open_id, create_or_get_user
+from app.libs.restful import gen_result_by_code
+from app.ops.address import get_address_list
+import app.libs.status_code as sc
 
 user_bp = Blueprint("egg_user", __name__, url_prefix="/api/v1/user")
 user_api = Api(user_bp)
@@ -17,15 +24,18 @@ user_api = Api(user_bp)
 class UserLogin(Resource):
 
     def post(self):
-        data = request.get_json(silent=True, force=True)
-        jscode = data.get("jscode")
-        get_open_id(jscode)
+        jscode = self.get_json_argument("jscode")
+        resp = get_open_id(jscode)
+        open_id = resp.get("open_id")
+        union_id = resp.get("union_id")
+        if not open_id:
+            return gen_result_by_code(sc.E_OPENID_FAILED)
 
-        create_or_get_user(open_id)
+        user = create_or_get_user(open_id, union_id)
 
-
-
-
+        # response = jsonify(gen_result_by_code(sc.SUCC, data=dict(open_id=open_id), msg="成功"))
+        # response.set_cookie()
+        return gen_result_by_code(sc.SUCC, user.dict_data)
 
 
 @user_api.resource("/user_info")
@@ -66,3 +76,30 @@ class AddressInfoResource(Resource):
 
     def post(self):
         data = create_address_info()
+
+
+@user_api.resource("/cards")
+class UserMembershipCardsResource(Resource):
+    def get(self):
+        cards = get_membership_list()
+        return gen_result_by_code(sc.SUCC, data=cards)
+
+
+@user_api.resource("/card")
+class MembershipResource(Resource):
+    schema = None
+    method_decorators = None
+
+    def get(self):
+        # get_membership_cards()
+        pass
+
+    def post(self):
+        # buy_card()
+        pass
+
+    def put(self):
+        pass
+
+    def delete(self):
+        pass

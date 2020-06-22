@@ -89,6 +89,7 @@ class DogonJSONEncoder(JSONEncoder):
         if isinstance(o, datetime):
             return strftime(o)
         elif isinstance(o, Success):
+            # 这块好像不太对
             return dict(msg=o.msg, error_code=o.error_code, code=o.code)
         else:
             return super().default(o)

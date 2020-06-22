@@ -10,6 +10,8 @@ from flask import request, g
 from flask_cors import CORS
 from lin import Lin
 from app.api.v1.eggshop import shop_bp
+from app.api.v1.user import user_bp
+from app.models.eggs import EggUser
 
 
 def register_blueprints(app):
@@ -18,6 +20,7 @@ def register_blueprints(app):
     # app.register_blueprint(create_v1(), url_prefix='/v1')
     app.register_blueprint(create_cms(), url_prefix='/cms')
     app.register_blueprint(shop_bp)
+    app.register_blueprint(user_bp)
 
 
 def apply_cors(app):
@@ -35,6 +38,14 @@ def register_before_request(app):
     def request_cost_time():
         g.request_start_time = time.time()
         g.request_time = lambda: "%.5f" % (time.time() - g.request_start_time)
+
+    @app.before_request
+    def bound_wechat_user():
+        open_id = request.cookies.get("open_id")
+        if open_id:
+            user = EggUser.query.filter_by(open_id=open_id).first()
+            if user:
+                g.egg_user = user
 
 
 def register_after_request(app):

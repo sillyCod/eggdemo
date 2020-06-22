@@ -19,7 +19,9 @@ status_codes = {
     1004: ("E_INVALID_PASSWORD", dict(zh='密码错误',
                                       en='Password is wrong')),
     1005: ("E_USER_NOT_EXISTS", dict(zh='用户不存在',
-                                     en='Account not found'))
+                                     en='User not found')),
+    1006: ("E_OPENID_FAILED", dict(zh="获取open id失败")),
+    1007: ("E_NO_OPENID", dict(zh="未发现openid"))
 }
 
 
