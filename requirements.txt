@@ -23,7 +23,7 @@ marshmallow==3.6.1
 oss2==2.6.1
 pipfile==0.0.2
 pycryptodome==3.9.7
-PyJWT==1.7.1
+PyJWT==2.4.0
 pytz==2020.1
 requests==2.23.0
 six==1.12.0
